@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList - VibeCoding</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#111827">
+</head>
+<body>
+    <div class="app">
+        <header class="app__header">
+            <h1 class="title">TodoList</h1>
+            <p class="subtitle">Gérez vos tâches simplement. Donnez du rythme à votre journée ✨</p>
+        </header>
+
+        <main class="app__main">
+            <section class="composer" aria-label="Ajouter une tâche">
+                <form id="todo-form" autocomplete="off">
+                    <button type="button" id="toggle-all" title="Tout cocher / décocher" aria-label="Tout basculer"></button>
+                    <input id="todo-input" type="text" placeholder="Ajouter une tâche et appuyer sur Entrée..." aria-label="Nouvelle tâche">
+                    <button class="btn btn--primary" type="submit" aria-label="Ajouter">Ajouter</button>
+                </form>
+            </section>
+
+            <section class="toolbar" aria-label="Filtres et actions">
+                <div class="filters" role="tablist" aria-label="Filtres de tâches">
+                    <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">Toutes</button>
+                    <button class="filter" data-filter="active" role="tab" aria-selected="false">Actives</button>
+                    <button class="filter" data-filter="completed" role="tab" aria-selected="false">Terminées</button>
+                </div>
+                <div class="toolbar__right">
+                    <span class="counter" aria-live="polite">
+                        <span id="count-remaining">0</span> en cours • <span id="count-total">0</span> au total
+                    </span>
+                    <button id="clear-completed" class="btn btn--ghost" type="button">Supprimer terminées</button>
+                </div>
+            </section>
+
+            <section class="list" aria-label="Liste des tâches">
+                <ul id="todo-list"></ul>
+            </section>
+        </main>
+
+        <footer class="app__footer">
+            <p>LocalStorage actif • Vos tâches sont sauvegardées sur cet appareil.</p>
+        </footer>
+    </div>
+
+    <template id="todo-item-template">
+        <li class="item" data-id="">
+            <label class="checkbox">
+                <input class="toggle" type="checkbox" aria-label="Terminer la tâche">
+                <span class="checkmark" aria-hidden="true"></span>
+            </label>
+            <div class="item__content">
+                <span class="item__text"></span>
+                <input class="item__edit" type="text" aria-label="Modifier la tâche">
+            </div>
+            <div class="item__actions">
+                <button class="icon-btn edit" title="Modifier" aria-label="Modifier">✏️</button>
+                <button class="icon-btn delete" title="Supprimer" aria-label="Supprimer">🗑️</button>
+            </div>
+        </li>
+    </template>
+
+    <script src="script.js" defer></script>
+    <noscript>Activez JavaScript pour utiliser l'application TodoList.</noscript>
+    
+    <!--
+      VibeCoding TodoList
+      - Ajouter: Entrée ou bouton Ajouter
+      - Éditer: bouton ✏️ ou double-clic
+      - Terminer: cocher la case
+      - Supprimer: bouton 🗑️
+      - Filtres: Toutes / Actives / Terminées
+      - Persistance: localStorage
+    -->
+</body>
+</html>
+
+

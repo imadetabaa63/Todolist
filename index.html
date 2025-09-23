@@ -4,65 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TodoList - VibeCoding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: 'class' };
+      (function() {
+        try {
+          const theme = localStorage.getItem('vibecoding.todos.theme.v1') || 'dark';
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#111827">
 </head>
-<body>
-    <div class="app">
-        <header class="app__header">
-            <h1 class="title">TodoList</h1>
-            <p class="subtitle">Gérez vos tâches simplement. Donnez du rythme à votre journée ✨</p>
+<body class="bg-slate-900 text-slate-100 dark:bg-slate-900">
+    <div class="min-h-screen grid grid-rows-[auto,1fr,auto]">
+        <header class="px-4 pt-8 pb-2 text-center">
+            <div class="flex items-center justify-center gap-3 mb-2">
+                <h1 class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-300 to-violet-300 text-transparent bg-clip-text">TodoList</h1>
+                <button id="theme-toggle" class="theme-toggle w-11 h-11 rounded-xl border border-slate-700 bg-slate-800/60 shadow flex items-center justify-center" title="Basculer le thème" aria-label="Basculer le thème">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            <p class="text-slate-400">Gérez vos tâches simplement. Donnez du rythme à votre journée ✨</p>
         </header>
 
-        <main class="app__main">
-            <section class="composer" aria-label="Ajouter une tâche">
-                <form id="todo-form" autocomplete="off">
-                    <button type="button" id="toggle-all" title="Tout cocher / décocher" aria-label="Tout basculer"></button>
-                    <input id="todo-input" type="text" placeholder="Ajouter une tâche et appuyer sur Entrée..." aria-label="Nouvelle tâche">
-                    <button class="btn btn--primary" type="submit" aria-label="Ajouter">Ajouter</button>
+        <main class="max-w-3xl w-full mx-auto p-4">
+            <section class="mb-3" aria-label="Ajouter une tâche">
+                <form id="todo-form" autocomplete="off" class="grid grid-cols-[44px,1fr,auto] gap-2 bg-slate-800/60 border border-slate-700 rounded-xl p-2 shadow">
+                    <button type="button" id="toggle-all" title="Tout cocher / décocher" aria-label="Tout basculer" class="w-10 h-10 rounded-lg border border-slate-700 bg-slate-900 text-slate-400">✓</button>
+                    <input id="todo-input" type="text" placeholder="Ajouter une tâche et appuyer sur Entrée..." aria-label="Nouvelle tâche" class="w-full px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-slate-100 placeholder-slate-500 outline-none" />
+                    <button class="px-4 py-2 rounded-lg border border-slate-700 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-slate-100" type="submit" aria-label="Ajouter">Ajouter</button>
                 </form>
             </section>
 
-            <section class="toolbar" aria-label="Filtres et actions">
-                <div class="filters" role="tablist" aria-label="Filtres de tâches">
-                    <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">Toutes</button>
-                    <button class="filter" data-filter="active" role="tab" aria-selected="false">Actives</button>
-                    <button class="filter" data-filter="completed" role="tab" aria-selected="false">Terminées</button>
+            <section class="flex items-center justify-between gap-3 py-3" aria-label="Filtres et actions">
+                <div class="inline-flex gap-1 p-1 rounded-xl border border-slate-700 bg-white/5" role="tablist" aria-label="Filtres de tâches">
+                    <button class="filter is-active px-3 py-2 rounded-lg border border-transparent text-slate-100" data-filter="all" role="tab" aria-selected="true">Toutes</button>
+                    <button class="filter px-3 py-2 rounded-lg border border-transparent text-slate-400" data-filter="active" role="tab" aria-selected="false">Actives</button>
+                    <button class="filter px-3 py-2 rounded-lg border border-transparent text-slate-400" data-filter="completed" role="tab" aria-selected="false">Terminées</button>
                 </div>
-                <div class="toolbar__right">
-                    <span class="counter" aria-live="polite">
+                <div class="flex items-center gap-3">
+                    <span class="text-slate-400" aria-live="polite">
                         <span id="count-remaining">0</span> en cours • <span id="count-total">0</span> au total
                     </span>
-                    <button id="clear-completed" class="btn btn--ghost" type="button">Supprimer terminées</button>
+                    <button id="clear-completed" class="px-3 py-2 rounded-lg border border-transparent text-slate-300 hover:text-red-300" type="button">Supprimer terminées</button>
                 </div>
             </section>
 
-            <section class="list" aria-label="Liste des tâches">
-                <ul id="todo-list"></ul>
+            <section class="bg-slate-800/60 border border-slate-700 rounded-xl shadow" aria-label="Liste des tâches">
+                <ul id="todo-list" class="list-none m-0 p-1"></ul>
             </section>
         </main>
 
-        <footer class="app__footer">
+        <footer class="text-center text-slate-400 p-6">
             <p>LocalStorage actif • Vos tâches sont sauvegardées sur cet appareil.</p>
         </footer>
     </div>
 
     <template id="todo-item-template">
-        <li class="item" data-id="">
-            <label class="checkbox">
-                <input class="toggle" type="checkbox" aria-label="Terminer la tâche">
-                <span class="checkmark" aria-hidden="true"></span>
-            </label>
-            <div class="item__content">
-                <span class="item__text"></span>
-                <input class="item__edit" type="text" aria-label="Modifier la tâche">
+        <li class="item grid grid-cols-[32px,1fr,auto] items-center gap-2 p-2 rounded-lg" data-id="">
+            <input class="toggle w-5 h-5" type="checkbox" aria-label="Terminer la tâche" />
+            <div class="item__content grid grid-cols-1 gap-1">
+                <span class="item__text break-words"></span>
+                <input class="item__edit hidden w-full px-3 py-2 rounded-md border border-slate-700 bg-slate-900 text-slate-100" type="text" aria-label="Modifier la tâche" />
             </div>
-            <div class="item__actions">
-                <button class="icon-btn edit" title="Modifier" aria-label="Modifier">✏️</button>
-                <button class="icon-btn delete" title="Supprimer" aria-label="Supprimer">🗑️</button>
+            <div class="item__actions inline-flex gap-2">
+                <button class="edit w-9 h-9 rounded-md border border-slate-700 text-indigo-300" title="Modifier" aria-label="Modifier">✏️</button>
+                <button class="delete w-9 h-9 rounded-md border border-slate-700 text-rose-300" title="Supprimer" aria-label="Supprimer">🗑️</button>
             </div>
         </li>
     </template>

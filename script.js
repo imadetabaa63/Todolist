@@ -14,21 +14,27 @@
   const countTotal = document.getElementById('count-total');
   const clearCompletedBtn = document.getElementById('clear-completed');
   const toggleAllBtn = document.getElementById('toggle-all');
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = themeToggle.querySelector('.theme-icon');
 
   /** État de l'application **/
   const STORAGE_KEY = 'vibecoding.todos.v1';
   const FILTER_KEY = 'vibecoding.todos.filter.v1';
+  const THEME_KEY = 'vibecoding.todos.theme.v1';
 
   /** @typedef {{ id: string, text: string, completed: boolean, createdAt: number }} Todo */
   /** @type {Todo[]} */
   let todos = [];
   /** @type {'all'|'active'|'completed'} */
   let activeFilter = 'all';
+  /** @type {'dark'|'light'} */
+  let currentTheme = 'dark';
 
   /** Utilitaires **/
   const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   const saveFilter = () => localStorage.setItem(FILTER_KEY, activeFilter);
+  const saveTheme = () => localStorage.setItem(THEME_KEY, currentTheme);
   const load = () => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -37,6 +43,8 @@
     } catch (_) { todos = []; }
     const f = localStorage.getItem(FILTER_KEY);
     if (f === 'all' || f === 'active' || f === 'completed') activeFilter = f;
+    const t = localStorage.getItem(THEME_KEY);
+    if (t === 'dark' || t === 'light') currentTheme = t;
   };
 
   const getFiltered = () => {
@@ -60,6 +68,17 @@
       btn.classList.toggle('is-active', isActive);
       btn.setAttribute('aria-selected', String(isActive));
     });
+  };
+
+  const applyTheme = () => {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeIcon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+  };
+
+  const toggleTheme = () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    saveTheme();
+    applyTheme();
   };
 
   /** Rendu **/
@@ -211,10 +230,12 @@
 
   clearCompletedBtn.addEventListener('click', clearCompleted);
   toggleAllBtn.addEventListener('click', toggleAll);
+  themeToggle.addEventListener('click', toggleTheme);
 
   /** Initialisation **/
   load();
   setActiveFilterButton();
+  applyTheme();
   render();
 })();
 

@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#111827">
 </head>
-<body class="bg-slate-900 text-slate-100 dark:bg-slate-900">
+<body class="text-slate-100 bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-900 dark:from-indigo-950 dark:via-purple-900 dark:to-slate-900">
     <div class="min-h-screen grid grid-rows-[auto,1fr,auto]">
         <header class="px-4 pt-8 pb-2 text-center">
             <div class="flex items-center justify-center gap-3 mb-2">
@@ -35,9 +35,9 @@
         <main class="max-w-3xl w-full mx-auto p-4">
             <section class="mb-3" aria-label="Ajouter une tâche">
                 <form id="todo-form" autocomplete="off" class="grid grid-cols-[44px,1fr,auto] gap-2 bg-slate-800/60 border border-slate-700 rounded-xl p-2 shadow">
-                    <button type="button" id="toggle-all" title="Tout cocher / décocher" aria-label="Tout basculer" class="w-10 h-10 rounded-lg border border-slate-700 bg-slate-900 text-slate-400">✓</button>
-                    <input id="todo-input" type="text" placeholder="Ajouter une tâche et appuyer sur Entrée..." aria-label="Nouvelle tâche" class="w-full px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-slate-100 placeholder-slate-500 outline-none" />
-                    <button class="px-4 py-2 rounded-lg border border-slate-700 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-slate-100" type="submit" aria-label="Ajouter">Ajouter</button>
+                    <button type="button" id="toggle-all" title="Tout cocher / décocher" aria-label="Tout basculer" class="w-10 h-10 rounded-lg border border-slate-700 bg-slate-900 text-slate-400 hover:text-emerald-300 hover:border-emerald-400/40 transition">✓</button>
+                    <input id="todo-input" type="text" placeholder="Ajouter une tâche et appuyer sur Entrée..." aria-label="Nouvelle tâche" class="w-full px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-500/20" />
+                    <button class="px-4 py-2 rounded-lg border border-slate-700 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-slate-100 hover:from-cyan-400/30 hover:to-violet-400/30 transition" type="submit" aria-label="Ajouter">Ajouter</button>
                 </form>
             </section>
 
@@ -55,8 +55,13 @@
                 </div>
             </section>
 
-            <section class="bg-slate-800/60 border border-slate-700 rounded-xl shadow" aria-label="Liste des tâches">
+            <section class="bg-slate-800/60 border border-slate-700 rounded-xl shadow overflow-hidden" aria-label="Liste des tâches">
+                <div class="bg-gradient-to-r from-cyan-500/10 to-violet-500/10 h-1 w-full"></div>
                 <ul id="todo-list" class="list-none m-0 p-1"></ul>
+                <div id="empty-state" class="hidden px-6 py-10 text-center text-slate-400">
+                    <div class="mx-auto w-12 h-12 rounded-xl border border-slate-700 bg-slate-900 grid place-items-center text-slate-500 mb-3">☑️</div>
+                    <p>Aucune tâche. Ajoutez votre première tâche pour commencer.</p>
+                </div>
             </section>
         </main>
 

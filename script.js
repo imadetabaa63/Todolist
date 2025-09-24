@@ -14,6 +14,7 @@
   const countTotal = document.getElementById('count-total');
   const clearCompletedBtn = document.getElementById('clear-completed');
   const toggleAllBtn = document.getElementById('toggle-all');
+  const emptyState = document.getElementById('empty-state');
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = themeToggle.querySelector('.theme-icon');
 
@@ -97,6 +98,10 @@
     }
     list.appendChild(fragment);
     updateCounters();
+    if (emptyState) {
+      const showEmpty = items.length === 0;
+      emptyState.classList.toggle('hidden', !showEmpty);
+    }
   };
 
   /** Actions **/
